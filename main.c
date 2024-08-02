@@ -15,7 +15,7 @@ typedef struct {
 
 void pegaelm(void* data){
     Serie* var = (Serie*) data;
-    printf("aqui está o item encontrado: \n");
+    printf("aqui esta o item encontrado: \n");
     printf("nome: %s ,temporadas: %d ,nota: %.2f \n", var->nome, var->temporadas, var->nota);
     printf("\n");
 }
