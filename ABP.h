@@ -34,15 +34,17 @@ void* abpQuery(Tnode* tree,void* key,int(*cmp)(void*,void*));
 
 Tnode* abpInsert(Tnode* tree,void* data,int(*cmp)(void*,void*));
 
-Tnode* abpRemove(Tnode *t, void *key, int (*cmp)(void *, void *), void **data);
+Tnode *abpRemove(Tnode *t, void *key, int(*cmp)(void*, void*), void **data);
 
-void* abpmenordata(Tnode* tree);
+Tnode* abpmenorno(Tnode* tree);
 
-void*abpmaiordata(Tnode* tree);
+Tnode* abpmaiorno(Tnode* tree);
 
-Tnode *abpRemoveMaior(Tnode *t, int (*cmp)( void *, void * ), void **data );
+Tnode* abpRemoveMaior(Tnode *t, int (*cmp)( void *, void * ), void **data );
 
 Tnode *abpRemoveMenor(Tnode *t, int (*cmp)( void *, void * ), void **data );
+
+void treeClean(Tnode* tree);
 
 int abpDestroy(Tnode *tree);
 /* destroi a árvore

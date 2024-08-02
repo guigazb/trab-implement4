@@ -14,12 +14,10 @@ typedef struct {
 
 
 void pegaelm(void* data){
-    int ind = 1;
     Serie* var = (Serie*) data;
-    printf("item %d: \n",ind);
+    printf("aqui está o item encontrado: \n");
     printf("nome: %s ,temporadas: %d ,nota: %.2f \n", var->nome, var->temporadas, var->nota);
     printf("\n");
-    ind++;
 }
 
 void listarColecao(Tnode *tree){ 
@@ -48,24 +46,11 @@ int cmp(void* a, void* b){
     return -2;
 }
 
-int treeClean(Tnode* tree){ 
-    if(tree != NULL){
-        void** data;
-        abpRemove(tree,abpmaiordata(tree),cmp,data);
-        while(data != NULL){
-            abpRemove(tree,abpmaiordata(tree),cmp,data);
-        } 
-        return true;
-    }
-    return false;
-}
-
 int main(){
     
     int flag = true;
     void listarColecao(Tnode *tree);
     int cmp(void* a, void* b);
-    int treeClean(Tnode* tree);
 
     Tnode *tree = NULL;
 
@@ -77,7 +62,7 @@ int main(){
         printf("4 - Consultar um elemento \n");
         printf("5 - listar os elementos \n");
         printf("6 - Destruir a colecao \n");
-        printf("7 - Esvaziar a colecao \n");
+        printf("7 - Esvaziar a colecao (destroi a colecao caso possua mais de um item) \n");
         printf("0 - Sair \n");
         printf("deseja realizar qual operacao? \n ");
         
@@ -91,6 +76,7 @@ int main(){
                     printf("\n");
                     break;
                 }
+
                 Serie *item = (Serie*)malloc(sizeof(Serie));
                 printf("digite qual sera o primeiro item: \n");
                 printf("Nome: ");
@@ -100,6 +86,7 @@ int main(){
                 printf("nota: ");
                 scanf("%f", &item->nota);
                 tree = abpCreate(item);
+
                 if(tree != NULL){
                     printf("Colecao criada com sucesso! \n");
                     printf("\n");
@@ -119,6 +106,7 @@ int main(){
                     scanf("%d", &item->temporadas);
                     printf("nota: ");
                     scanf("%f", &item->nota);
+
                     if(abpInsert(tree,item,cmp) != NULL){ 
                         printf("Serie inserida com sucesso \n");
                         printf("\n");
@@ -147,7 +135,7 @@ int main(){
                     scanf("%f", &item->nota);
 
                     abpRemove(tree,item,cmp,&salvo);
-                    if(salvo != NULL){ // não está removendo, mas o código já não quebra mais
+                    if(salvo != NULL){
                         printf("item removido com sucesso! \n");
                         printf("\n");
                         salvado = (Serie*) salvo;
@@ -225,9 +213,10 @@ int main(){
             }
             case 7:{
                 if(tree != NULL){
-                    abpesvazia(tree,cmp);
+                    treeClean(tree);
                     printf("A colecao foi esvaziada \n");
                     printf("\n");
+                    tree = NULL;
                     break;
                 }else{
                     printf("A colecao nao foi esvaziada \n");
