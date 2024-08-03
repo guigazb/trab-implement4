@@ -99,7 +99,6 @@ void* abpQuery(Tnode* tree,void* key,int(*cmp)(void*,void*)){
 }
 
 Tnode* abpInsert(Tnode* tree,void* data,int(*cmp)(void*,void*)){
-    void* data2; // n sei 
     Tnode* newnode;
     if(tree != NULL){
         int stat = cmp(data,tree->data);
@@ -122,7 +121,7 @@ Tnode* abpInsert(Tnode* tree,void* data,int(*cmp)(void*,void*)){
 
 Tnode *abpRemove(Tnode *t, void *key, int(*cmp)(void*, void*), void **data){
     if(t != NULL){ 
-        void *data2 = (void*)malloc(sizeof(void));
+        void *data2;
         int stat = cmp(key, t->data);
         if(stat < 0){
             t->l = abpRemove(t->l, key, cmp, data);
@@ -136,15 +135,13 @@ Tnode *abpRemove(Tnode *t, void *key, int(*cmp)(void*, void*), void **data){
                 free(t);
                 return NULL;
             }else if(t->l == NULL && t->r != NULL){ // Nó somente com filho direito 
-                Tnode *aux = abpmenorno(t->r);
-                t->data = aux->data; 
-                t->r = abpRemove(t->l, aux->data, cmp, &data2);
-                return t;
+                Tnode *aux = t->r;
+                free(t);
+                return aux;
             }else if(t->l != NULL && t->r == NULL){ // Nó somente com filho esquerdo 
-                Tnode *aux = abpmaiorno(t->l);
-                t->data = aux->data;
-                t->l = abpRemove(t->l, aux->data, cmp, &data2);
-                return t;
+                Tnode *aux = t->l;
+                free(t);
+                return aux;
             }else{ //Nó com dois filhos
                 
                 //sucessor da esquerda
@@ -153,10 +150,9 @@ Tnode *abpRemove(Tnode *t, void *key, int(*cmp)(void*, void*), void **data){
                 t->l = abpRemove(t->l, aux->data, cmp, &data2); // Remove o sucessor da subárvore esquerda
 
                 /* sucessor da direita
-                   Tnode *aux = abpmenordata(t->r); // Acha o sucessor, o menor dos maiores
+                   Tnode *aux = abpmenorno(t->r); // Acha o sucessor, o menor dos maiores
                    t->data = aux->data;
-                   void *data2 = (void*)malloc(sizeof(void));
-                   t->r = abpRemove(t->r, aux->data, cmp, data2); // Remove o sucessor da subárvore direita
+                   t->r = abpRemove(t->r, aux->data, cmp, &data2); // Remove o sucessor da subárvore direita
                 */
 
                 return t;
